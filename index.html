@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Parcel Sandbox</title>
+    <meta charset="UTF-8" />
+    <!-- CSS only -->
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+      crossorigin="anonymous"
+    />
+  </head>
+
+  <body>
+    <!-- START -->
+    <div
+      id="travel-party-identification-container"
+      class="invisible container"
+      data-bind="css: { invisible: !ready }"
+    >
+      <div class="row">
+        <div class="col-sm-10 offset-sm-1 col-md-6 offset-md-3">
+          <h1 class="h4 text-center px-3 mb-4 mt-4">
+            Attraction Timed Ticket Reservations
+          </h1>
+
+          <!-- ko if: !success() && !hasReachedAttemptLimit() -->
+          <form
+            data-bind="submit: onSubmit, validationOptions: validationOptions"
+          >
+            <div data-bind="with: model">
+              <div data-bind="foreach: inputList">
+                <!-- ko if: typeof $data === 'function' -->
+                <span>---</span>
+                <!-- /ko -->
+                <!-- ko if: typeof $data === 'object' -->
+                <div class="form-group mb-4">
+                  <label class="mb-1" data-bind="text: label"></label>
+                  <!-- ko if: helpModal -->
+                  <a
+                    href="#"
+                    tabindex="-1"
+                    class="badge badge-pill badge-dark"
+                    data-toggle="modal"
+                    data-bind="attr: { 'data-target': helpModal }"
+                    >?</a
+                  >
+                  <!-- /ko -->
+                  <input
+                    type="text"
+                    class="form-control w-100 mw-100"
+                    data-bind="value: value, attr: { placeholder: placeholder }"
+                  />
+                </div>
+                <!-- /ko -->
+              </div>
+            </div>
+
+            <div class="text-center">
+              <button
+                type="submit"
+                class="btn btn-primary"
+                data-bind="
+                  text: submitBtnText,
+                  attr: { disabled: loading() },
+                  css: { 'btn-success': success }
+                "
+              ></button>
+            </div>
+          </form>
+          <!-- /ko -->
+
+          <!-- ko if: success() -->
+          <div class="alert alert-success">
+            <h6 class="font-weight-bold text-center">Success!</h6>
+            <p>
+              We have located your order and sent an email with information on
+              how to make timed entry reservations.
+            </p>
+            <p>
+              If you do not receive that email please check your spam folder or
+              contact our CityPASS Customer Support at (888) 330-5008 (US &
+              Canada) or using Live Chat.
+            </p>
+          </div>
+          <!-- /ko -->
+
+          <!-- ko if: error() -->
+          <div class="alert alert-danger mt-3">
+            <h6 class="font-weight-bold text-center">Error</h6>
+            <p data-bind="text: error"></p>
+            <p>
+              If you continue to experience problems please contact our CityPASS
+              Customer Support at (888) 330-5008 (US & Canada) or using Live
+              Chat.
+            </p>
+          </div>
+          <!-- /ko -->
+
+          <p class="border-top pt-2 mt-5 small">
+            For assistance, please call CityPASS Customer Support at (888)
+            330-5008 (US & Canada) or connect with us using Live Chat.
+          </p>
+        </div>
+      </div>
+
+      <!-- help-modal -->
+      <div
+        class="modal fade"
+        id="barcode-hints"
+        tabindex="-1"
+        role="dialog"
+        aria-labelledby="modalLabel"
+        aria-hidden="true"
+      >
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">
+                Barcode Locations
+              </h5>
+              <button
+                type="button"
+                class="close"
+                data-dismiss="modal"
+                aria-label="Close"
+              >
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <div class="text-center">
+                [[how to find barcode]]
+              </div>
+
+              <p class="small text-muted text-center m-3">
+                If you need help finding your order number, please call CityPASS
+                Customer Support at (888) 330-5008 or connect with us using Live
+                Chat for assistance.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- /help-modal -->
+
+      <!-- debug -->
+      <div class="mt-5">
+        <button class="mb-3" data-bind="click: reset">Reset</button>
+        <h6 class="text-bold">Mock DataService Response</h6>
+        <div data-bind="foreach: payloadIDs">
+          <label class="d-block">
+            <input
+              type="radio"
+              name="responseType"
+              data-bind="value: $data, checked: $parent.mockPayloadID"
+            />
+            <span data-bind="text: $data"></span>
+          </label>
+        </div>
+
+        <h6 class="text-bold">Mock Condition</h6>
+        <div data-bind="foreach: mockConditions">
+          <label class="d-block">
+            <input
+              type="radio"
+              name="mockCondition"
+              data-bind="value: $data, checked: $parent.model().currentCondition"
+            />
+            <span data-bind="text: $data"></span>
+          </label>
+        </div>
+
+        <pre
+          class="border bg-light p-3 mt-5 "
+        ><code data-bind="text: ko.toJSON($data, null, 2)"></code></pre>
+      </div>
+      <!-- /debug -->
+      <!-- END -->
+    </div>
+
+    <script src="src/index.js"></script>
+  </body>
+</html>
